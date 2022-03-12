@@ -1,0 +1,45 @@
+<h1 mat-dialog-title>Add product form</h1>
+<div class="form" matDialogContent>
+
+
+<form [formGroup]="productForm">
+<mat-form-field [style.width.px]=270 appearance="outline">
+    <mat-label>product name</mat-label>
+    <input matInput formControlName="productName" placeholder="enter here">
+    <mat-hint>eg.xyz</mat-hint>
+</mat-form-field>
+<br>
+
+<mat-form-field [style.width.px]=270 appearance="fill">
+<mat-select  formControlName="category" placeholder="category">
+<mat-option value="Electronics">Electronics</mat-option>
+<mat-option value="Vegetables">Vegetables</mat-option>
+<mat-option value="Fruits">Fruits</mat-option>
+</mat-select>
+<mat-label>Product Category</mat-label>
+</mat-form-field><br>
+
+<label for=""><h1>product freshness</h1></label>
+  <mat-radio-group class="example-radio-group"  formControlName="freshness" >
+      <mat-radio-button class="example-radio-button" *ngFor="let fresh of  freshnessList" [value]="fresh">
+        {{fresh}}
+      </mat-radio-button>
+  </mat-radio-group><br>
+
+  <mat-form-field appearance="outline"  [style.width.px]=270>
+    <mat-label>price</mat-label>
+    <input matInput type="number" placeholder="price here"  formControlName="price">
+    <mat-hint>eg.12345</mat-hint>
+</mat-form-field><br>
+
+<mat-form-field  appearance="outline"  [style.width.px]=270>
+<mat-label>comment</mat-label>
+<textarea matInput formControlName="comment"></textarea>
+</mat-form-field><br>
+</form>
+
+
+<div mat-dialog-actions [align]="'end'">
+  <button mat-raised-button color="warn" mat-dialog-close="">Close</button>
+  <button style="margin-left: 8px;" mat-raised-button color="primary" (click)="addProduct()">{{actionBtn}}</button>
+</div>
