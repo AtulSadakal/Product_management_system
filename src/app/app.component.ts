@@ -1,11 +1,12 @@
 
-import { Component, OnInit, ViewChild} from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogComponent } from './dialog/dialog.component';
 import { ApiService } from './services/api.service';
-import {MatPaginator} from '@angular/material/paginator';
-import {MatSort} from '@angular/material/sort';
-import {MatTableDataSource} from '@angular/material/table';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-root',
@@ -15,7 +16,7 @@ import {MatTableDataSource} from '@angular/material/table';
 export class AppComponent implements OnInit {
   title = 'angularCRUD';
 
-  displayedColumns: string[] = ['productName', 'category', 'freshness', 'price','comment','action'];
+  displayedColumns: string[] = ['productName', 'category', 'freshness', 'price', 'comment', 'action'];
   dataSource!: MatTableDataSource<any>;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -28,55 +29,71 @@ export class AppComponent implements OnInit {
     this.getAllProducts();
   }
 
-  
+
   openDialog() {
     this.dialog.open(DialogComponent, {
-
-
-      //dialogRef.afterClosed().subscribe(result => 
-
-    }).afterClosed().subscribe(val=>{
-      if(val=='save'){
+    }).afterClosed().subscribe(val => {
+      if (val == 'save') {
         this.getAllProducts()
       }
     })
   }
+
   getAllProducts() {
     this.api.getProduct(data).subscribe({
-        next: (res: any) => {
-         
-          this.dataSource=new MatTableDataSource(res);
-          this.dataSource.paginator=this.paginator;
-          this.dataSource.sort=this.sort;
-        }, error: () => {
-          alert("Error while fetching data")
-        }
-      });
+      next: (res: any) => {
+        this.dataSource = new MatTableDataSource(res);
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+      }, error: () => {
+          Swal.fire({
+          position: 'top-end',
+          icon: 'error',
+          title: 'Error While Fetching Data!',
+          showConfirmButton: false,
+          timer: 1500
+        })
+      }
+    });
   }
-  editProduct(row:any){
-    this.dialog.open(DialogComponent,{
-        width:'30%',
-        data:row
-    }).afterClosed().subscribe(val=>{
-      if(val=='update'){
+
+  editProduct(row: any) {
+    this.dialog.open(DialogComponent, {
+      width: '30%',
+      data: row
+    }).afterClosed().subscribe(val => {
+      if (val == 'update') {
         this.getAllProducts()
       }
     })
   }
-  deleteProduct(id:number){
+
+  deleteProduct(id: number) {
     this.api.deleteProduct(id).subscribe({
-      next:(res)=>{
-        alert("Product Deleted Successfully!!")
+      next: (res) => {
+        Swal.fire({
+          position: 'top-end',
+          icon: 'success',
+          title: 'Product Deleted Successfully!!',
+          showConfirmButton: false,
+          timer: 1500
+        })
         this.getAllProducts()
-      },error:()=>{
-        alert("error while deleting the product!!")
+      }, error: () => {
+        Swal.fire({
+          position: 'top-end',
+          icon: 'error',
+          title: 'Error While Deleting The Product!',
+          showConfirmButton: false,
+          timer: 1500
+        })
       }
     })
   }
+  
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
-
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }

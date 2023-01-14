@@ -2,6 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ApiService } from '../services/api.service';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-dialog',
@@ -45,12 +46,24 @@ export class DialogComponent implements OnInit {
         this.api.postProduct(this.productForm.value)
           .subscribe({
             next: (res) => {
-              alert("product added successfully");
+              Swal.fire({
+                position: 'top-end',
+                icon: 'success',
+                title: 'Product Added Successfully!!',
+                showConfirmButton: false,
+                timer: 1500
+              })
               this.productForm.reset();
               this.dialogref.close('save');
             },
             error: () => {
-              alert("Error while adding the product")
+              Swal.fire({
+                position: 'top-end',
+                icon: 'error',
+                title: 'Error While Adding Product!',
+                showConfirmButton: false,
+                timer: 1500
+              })
             }
           })
       }
@@ -62,12 +75,24 @@ export class DialogComponent implements OnInit {
     this.api.putProduct(this.productForm.value,this.editData.id)
     .subscribe({
       next:(res)=>{
-        alert("update successful!!")
+        Swal.fire({
+          position: 'top-end',
+          icon: 'success',
+          title: 'Product Updated Successfully!!',
+          showConfirmButton: false,
+          timer: 1500
+        })
         this.productForm.reset();
         this.dialogref.close('update')
       },
       error:()=>{
-        alert("Error while updating!!")
+        Swal.fire({
+          position: 'top-end',
+          icon: 'error',
+          title: 'Error While Updating!',
+          showConfirmButton: false,
+          timer: 1500
+        })
       }
     })
   }

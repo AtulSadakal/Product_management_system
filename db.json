@@ -1,5 +1,30 @@
 {
-  "productList": [],
+  "productList": [
+    {
+      "productName": "atul",
+      "category": "Electronics",
+      "freshness": "brand-new",
+      "price": 256,
+      "comment": "good",
+      "id": 1
+    },
+    {
+      "productName": "test",
+      "category": "Electronics",
+      "freshness": "brand-new",
+      "price": 21,
+      "comment": "test",
+      "id": 2
+    },
+    {
+      "productName": "Samsung",
+      "category": "Electronics",
+      "freshness": "brand-new",
+      "price": 20,
+      "comment": "test",
+      "id": 3
+    }
+  ],
   "comments": [
     {}
   ],
